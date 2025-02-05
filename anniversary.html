@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>승규 ❤️ 수현</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffebf0;
+            color: #d63384;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        .title {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+        .countdown {
+            font-size: 36px;
+            margin-top: 20px;
+            color: #ff69b4;
+        }
+        .milestones {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: left;
+        }
+        .milestones ul {
+            list-style: none;
+            padding: 0;
+        }
+        .milestones li {
+            padding: 8px;
+            border-bottom: 1px solid #ff69b4;
+        }
+        .milestones .upcoming {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff1493;
+        }
+        /* 🩷 하트 애니메이션 */
+        .heart {
+            position: fixed;
+            color: #ff69b4;
+            font-size: 20px;
+            animation: float 3s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            50% { transform: translateY(-150px) scale(1.5); opacity: 0.7; }
+            100% { transform: translateY(-300px) scale(2); opacity: 0; }
+        }
+        /* 댓글 영역 */
+        .comment-section {
+            margin-top: 40px;
+        }
+        .comment-input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ff69b4;
+            outline: none;
+        }
+        .comment-btn {
+            padding: 10px 20px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .comment-btn:hover {
+            background-color: #ff1493;
+        }
+        .comments {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">🐶 승규 ❤️ 수현 🐰</div>
+
+    <div class="container">
+        <h1>💖💖</h1>
+        <div class="countdown" id="dDay"></div>
+        <div class="milestones">
+            <h2>🎉 🎉</h2>
+            <div id="upcomingMilestone" class="upcoming"></div>
+            <ul id="milestoneList"></ul>
+        </div>
+
+        <!-- 댓글 섹션 -->
+        <div class="comment-section">
+            <h3>💬 댓글 남기기 💬</h3>
+            <textarea id="commentInput" class="comment-input" placeholder="소중한 의견을 남겨주세요..."></textarea><br>
+            <button id="commentBtn" class="comment-btn">댓글 남기기</button>
+            <div id="comments" class="comments"></div>
+        </div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const startDate = new Date('2024-04-19'); 
+            const today = new Date();
+            const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) ;
+
+            document.getElementById('dDay').innerText = `💖 오늘은 D+${diff}일째! 💖`;
+        }
+
+        function updateMilestones() {
+            const startDate = new Date('2024-04-19');
+            const milestoneList = document.getElementById('milestoneList');
+            const upcomingMilestone = document.getElementById('upcomingMilestone');
+            milestoneList.innerHTML = ""; // 초기화
+            upcomingMilestone.innerHTML = ""; // 초기화
+
+            const milestones = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 365]; // 1주년(365일) 포함
+            const upcomingMilestones = [];
+
+            // 오늘 날짜 이후의 기념일만 추출
+            milestones.forEach(days => {
+                let milestoneDate = new Date(startDate);
+                milestoneDate.setDate(startDate.getDate() + days ); 
+
+                if (milestoneDate > new Date()) {
+                    upcomingMilestones.push({ days, milestoneDate });
+                }
+            });
+
+            // 가까운 기념일 표시
+            if (upcomingMilestones.length > 0) {
+                const closest = upcomingMilestones[0];
+                const formattedDate = closest.milestoneDate.toISOString().split('T')[0];
+                const text = (closest.days === 365) ? `🎂 1주년 (💖 ${formattedDate})` : `💖 ${closest.days}일 기념일 (${formattedDate})`;
+
+                upcomingMilestone.innerHTML = `💖 다가오는 기념일: ${text}`;
+
+                // 그 이후의 기념일 표시
+                upcomingMilestones.slice(1).forEach(celebration => {
+                    const date = celebration.milestoneDate.toISOString().split('T')[0];
+                    const milestoneText = (celebration.days === 365) ? `🎂 1주년 (💖 ${date})` : `💖 ${celebration.days}일 기념일 (${date})`;
+
+                    let li = document.createElement('li');
+                    li.innerText = milestoneText;
+                    milestoneList.appendChild(li);
+                });
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.innerText = "💖";
+            heart.classList.add("heart");
+
+            // 랜덤 위치 설정
+            const x = Math.random() * window.innerWidth;
+            const y = window.innerHeight;
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+            heart.style.fontSize = `${Math.random() * 20 + 20}px`;
+
+            document.body.appendChild(heart);
+
+            // 일정 시간 후 삭제
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
+        }
+
+        function postComment() {
+            const commentInput = document.getElementById('commentInput');
+            const commentsDiv = document.getElementById('comments');
+            const commentText = commentInput.value.trim();
+
+            if (commentText) {
+                const newComment = document.createElement('p');
+                newComment.innerText = commentText;
+                commentsDiv.appendChild(newComment);
+                commentInput.value = ''; // 댓글 작성 후 입력란 비우기
+            }
+        }
+
+        updateCountdown();
+        updateMilestones();
+        setInterval(updateCountdown, 1000 * 60 * 60); // 1시간마다 업데이트
+        setInterval(createHeart, 500); // 하트 0.5초마다 생성
+
+        // 댓글 
+        document.getElementById('commentBtn').addEventListener('click', postComment);
+    </script>
+</body>
+</html>
