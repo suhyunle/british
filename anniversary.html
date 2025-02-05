@@ -133,7 +133,7 @@
             const milestones = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 365]; // 1주년(365일) 포함
             const upcomingMilestones = [];
 
-            // 오늘 날짜 이후의 기념일만 추출
+            
             milestones.forEach(days => {
                 let milestoneDate = new Date(startDate);
                 milestoneDate.setDate(startDate.getDate() + days ); 
@@ -143,7 +143,7 @@
                 }
             });
 
-            // 가까운 기념일 표시
+            
             if (upcomingMilestones.length > 0) {
                 const closest = upcomingMilestones[0];
                 const formattedDate = closest.milestoneDate.toISOString().split('T')[0];
@@ -151,7 +151,7 @@
 
                 upcomingMilestone.innerHTML = `💖 다가오는 기념일: ${text}`;
 
-                // 그 이후의 기념일 표시
+                
                 upcomingMilestones.slice(1).forEach(celebration => {
                     const date = celebration.milestoneDate.toISOString().split('T')[0];
                     const milestoneText = (celebration.days === 365) ? `🎂 1주년 (💖 ${date})` : `💖 ${celebration.days}일 기념일 (${date})`;
